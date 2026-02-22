@@ -6,7 +6,7 @@ resource "aws_vpc" "main" {
   tags = {
     name         = var.name
     owner        = var.owner
-    environement = var.environement
+    environement = var.environment
 
   }
 }
