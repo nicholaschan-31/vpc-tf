@@ -4,7 +4,7 @@ resource "aws_vpc" "main" {
   instance_tenancy = "default"
 
   tags = {
-    name        = var.name
+    Name        = "${var.name}-vpc"
     owner       = var.owner
     environment = var.environment
 
@@ -14,6 +14,10 @@ resource "aws_vpc" "main" {
 #igw
 resource "aws_internet_gateway" "main_igw" {
   vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "${var.name}-igw"
+  }
 }
 
 #subnets
@@ -22,17 +26,29 @@ resource "aws_subnet" "main_public_subnet" {
   cidr_block              = var.cidr_block_public_subnet
   availability_zone       = var.availability_zone
   map_public_ip_on_launch = true
+
+  tags = {
+    Name = "${var.name}-public-subnet"
+  }
 }
 
 resource "aws_subnet" "main_private_subnet" {
   vpc_id            = aws_vpc.main.id
   cidr_block        = var.cidr_block_private_subnet
   availability_zone = var.availability_zone
+
+  tags = {
+    Name = "${var.name}-private-subnet"
+  }
 }
 
 #rtb
 resource "aws_route_table" "main_public_rtb" {
   vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "${var.name}-public-rtb"
+  }
 
 }
 
@@ -45,6 +61,10 @@ resource "aws_route" "main_public_route" {
 
 resource "aws_route_table" "main_private_rtb" {
   vpc_id = aws_vpc.main.id
+
+   tags = {
+    Name = "${var.name}-private-rtb"
+  }
 
 }
 
