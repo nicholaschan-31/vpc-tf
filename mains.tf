@@ -4,9 +4,9 @@ resource "aws_vpc" "main" {
   instance_tenancy = "default"
 
   tags = {
-    name         = var.name
-    owner        = var.owner
-    environement = var.environment
+    name        = var.name
+    owner       = var.owner
+    environment = var.environment
 
   }
 }
