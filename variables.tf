@@ -31,3 +31,16 @@ variable "cidr_block_private_subnet" {
 variable "availability_zone" {
   type = string
 }
+
+variable "cidr_block_public_subnet_2" {
+  type        = string
+  description = "second public subnet"
+}
+
+variable "availability_zone_2" {
+  type = string
+}
+
+variable "security_group_id" {
+  type = list(string)
+}
