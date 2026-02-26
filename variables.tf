@@ -18,29 +18,28 @@ variable "owner" {
   description = "for tag"
 }
 
-variable "cidr_block_public_subnet" {
-  type        = string
-  description = "cidr value for public subnet"
+variable "public_subnet" {
+  type = list(object({
+    cidr = string
+    az   = string
+  }))
+
+  description = "public subnet list"
 }
 
-variable "cidr_block_private_subnet" {
-  type        = string
-  description = "cidr value for public subnet"
-}
+variable "private_subnet" {
+  type = list(object({
+    cidr = string
+    az   = string
+  }))
 
-variable "availability_zone" {
-  type = string
-}
-
-variable "cidr_block_public_subnet_2" {
-  type        = string
-  description = "second public subnet"
-}
-
-variable "availability_zone_2" {
-  type = string
+  description = "private subnet list"
 }
 
 variable "security_group_id" {
+  type = list(string)
+}
+
+variable "endpoint_service_name" {
   type = list(string)
 }
