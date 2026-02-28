@@ -1,40 +1,41 @@
+name: Terraform Module CI
+
 on:
-    pull_requests:
-    push:
-        branches: ["main"]
+  pull_request:
+  push:
+    branches: ["main"]
 
 permissions:
-    contents: read
+  contents: read
 
 jobs:
-    validate:
-        runs-on: ubuntu-latest
-
+  validate:
+    runs-on: ubuntu-latest
     steps:
-        - name: Checkout
-          uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v4
 
-        - name: Setup tf
-          uses: hashicorp/setup-terraform@v3
-          with:
-            terraform_version: 1.7.5
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.5
 
-        - name: Terraform fmt
-          run: terraform fmt -check -recursive
+      - name: Terraform fmt
+        run: terraform fmt -check -recursive
 
-        - name: Terraform innit
-          run: terraform init -backend=false -input=false
+      - name: Terraform init
+        run: terraform init -backend=false -input=false
 
-        - name: Terraform validate
-          run: terraform validate
+      - name: Terraform validate
+        run: terraform validate
 
-        - name: Setup TFlint
-          uses: terraform-linters/setup-tflint@v4
-          with: 
-            tflint_version: v0.50.3
-        
-        - name: Init TFLint
-          run: tflint --init
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: v0.50.3
 
-        - name: Run TFLint
-          run : tflint --recursive
+      - name: Init TFLint
+        run: tflint --init
+
+      - name: Run TFLint
+        run: tflint --recursive
