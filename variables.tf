@@ -8,15 +8,6 @@ variable "name" {
   description = "for tag"
 }
 
-variable "environment" {
-  type        = string
-  description = "for tag"
-}
-
-variable "owner" {
-  type        = string
-  description = "for tag"
-}
 
 variable "public_subnet" {
   type = list(object({
