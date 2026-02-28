@@ -90,7 +90,7 @@ resource "aws_vpc_endpoint" "ssm" {
   service_name       = var.endpoint_service_name[count.index]
   vpc_endpoint_type  = "Interface"
   subnet_ids         = [aws_subnet.main_private_subnet[0].id]
-  security_group_ids = var.security_group_id
+  security_group_ids = [aws_security_group.interface_endpoint.id]
 
   private_dns_enabled = true
 
@@ -99,7 +99,68 @@ resource "aws_vpc_endpoint" "ssm" {
   }
 }
 
+#sg
+resource "aws_security_group" "standard_sg" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "carapp-standard-sg"
+  }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "allow_lb_sg" {
+  security_group_id = aws_security_group.standard_sg.id
+  cidr_ipv4         = aws_vpc.lb_sg.id
+  from_port         = 80
+  ip_protocol       = "tcp"
+  to_port           = 80
+}
+
+resource "aws_vpc_group_egress_rule" "allow_all" {
+  security_group_id = aws_security_group.standard_sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1"
+}
 
 
+resource "aws_security_group" "lb_sg" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "carapp-lb-sg"
+  }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "allow_all_lb_sg" {
+  security_group_id = aws_security_group.standard_sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  from_port         = 80
+  ip_protocol       = "tcp"
+  to_port           = 80
+}
+
+resource "aws_vpc_group_egress_rule" "allow_standard_sg" {
+  security_group_id = aws_security_group.lb_sg.id
+  cidr_ipv4         = aws_security_group.standard_sg.id
+  from_port         = 80
+  ip_protocol       = "tcp"
+  to_port           = 80
+}
+
+resource "aws_security_group" "interface_endpoint" {
+  vpc_id = aws_vpc.main.id
+
+  tags = {
+    Name = "interface-endpoint-sg"
+  }
+}
+
+resource "aws_vpc_security_group_ingress_rule" "allow_interface_endpoint" {
+  security_group_id = aws_security_group.interface_endpoint.id
+  cidr_ipv4         = aws_security_group.standard_sg.id
+  from_port         = 443
+  ip_protocol       = "tcp"
+  to_port           = 443
+}
 
 

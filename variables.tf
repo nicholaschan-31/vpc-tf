@@ -27,9 +27,9 @@ variable "private_subnet" {
   description = "private subnet list"
 }
 
-variable "security_group_id" {
-  type = list(string)
-}
+# variable "security_group_id" {
+#   type = list(string)
+# }
 
 variable "endpoint_service_name" {
   type = list(string)
