@@ -89,7 +89,7 @@ resource "aws_vpc_endpoint" "ssm" {
   vpc_id             = aws_vpc.main.id
   service_name       = var.endpoint_service_name[count.index]
   vpc_endpoint_type  = "Interface"
-  subnet_ids          = [aws_subnet.main_private_subnet[0].id]
+  subnet_ids         = [aws_subnet.main_private_subnet[0].id]
   security_group_ids = var.security_group_id
 
   private_dns_enabled = true
