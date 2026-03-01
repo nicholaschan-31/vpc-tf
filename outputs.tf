@@ -19,3 +19,7 @@ output "private_subnet_ids" {
 output "alb_sg_ids" {
   value = aws_security_group.lb_sg.id
 }
+
+output "ec2_sg_ids" {
+  value = aws_security_group.standard_sg.id
+}

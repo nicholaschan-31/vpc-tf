@@ -71,6 +71,7 @@ resource "aws_route" "main_public_route" {
   gateway_id             = aws_internet_gateway.main_igw.id
 }
 
+
 #rtb association
 resource "aws_route_table_association" "public" {
   count = length(aws_subnet.main_public_subnet)
@@ -111,7 +112,7 @@ resource "aws_security_group" "standard_sg" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_lb_sg" {
+resource "aws_vpc_security_group_ingress_rule" "ingress_lb_sg" {
   security_group_id            = aws_security_group.standard_sg.id
   referenced_security_group_id = aws_security_group.lb_sg.id
   from_port                    = 80
@@ -134,15 +135,15 @@ resource "aws_security_group" "lb_sg" {
   }
 }
 
-resource "aws_vpc_security_group_ingress_rule" "allow_all_lb_sg" {
-  security_group_id = aws_security_group.standard_sg.id
+resource "aws_vpc_security_group_ingress_rule" "ingress_all_lb_sg" {
+  security_group_id = aws_security_group.lb_sg.id
   cidr_ipv4         = "0.0.0.0/0"
   from_port         = 80
   ip_protocol       = "tcp"
   to_port           = 80
 }
 
-resource "aws_vpc_security_group_egress_rule" "allow_standard_sg" {
+resource "aws_vpc_security_group_egress_rule" "egress_standard_sg" {
   security_group_id            = aws_security_group.lb_sg.id
   referenced_security_group_id = aws_security_group.standard_sg.id
   from_port                    = 80
