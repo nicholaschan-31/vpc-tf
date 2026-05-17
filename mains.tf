@@ -108,7 +108,7 @@ resource "aws_security_group" "standard_sg" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "carapp-standard-sg"
+    Name = "${var.name}-standard-sg"
   }
 }
 
@@ -131,7 +131,7 @@ resource "aws_security_group" "lb_sg" {
   vpc_id = aws_vpc.main.id
 
   tags = {
-    Name = "carapp-lb-sg"
+    Name = "${var.name}app-lb-sg"
   }
 }
 
